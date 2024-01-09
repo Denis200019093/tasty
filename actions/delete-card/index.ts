@@ -8,7 +8,7 @@ import { createAuditLog } from "@/lib/create-audit-log";
 import { db } from "@/lib/db";
 import { createSafeAction } from "@/lib/create-safe-action";
 
-import { UpdateList } from "./schema";
+import { DeleteCard } from "./schema";
 import { InputType, ReturnType } from "./types";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
@@ -20,38 +20,35 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     };
   }
 
-  const { title, id, boardId } = data;
-
-  let list;
+  const { id, boardId } = data;
+  let card;
 
   try {
-    list = await db.list.update({
+    card = await db.card.delete({
       where: {
         id,
-        boardId,
-        board: {
-          orgId,
+        list: {
+          board: {
+            orgId,
+          },
         },
-      },
-      data: {
-        title,
       },
     });
 
     await createAuditLog({
-      entityTitle: list.title,
-      entityId: list.id,
-      entityType: ENTITY_TYPE.LIST,
-      action: ACTION.UPDATE,
+      entityTitle: card.title,
+      entityId: card.id,
+      entityType: ENTITY_TYPE.CARD,
+      action: ACTION.DELETE,
     });
   } catch (error) {
     return {
-      error: "Failed to update",
+      error: "Failed to delete.",
     };
   }
 
   revalidatePath(`/board/${boardId}`);
-  return { data: list };
+  return { data: card };
 };
 
-export const updateList = createSafeAction(UpdateList, handler);
+export const deleteCard = createSafeAction(DeleteCard, handler);
