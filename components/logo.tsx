@@ -12,12 +12,12 @@ export const Logo = () => {
   return (
     <Link href={"/"}>
       <div className="hover:opacity-75 transition items-center gap-x-2 hidden md:flex">
-        <Image src="/logo.svg" alt="Logo" width={30} height={30} />
-        <p
+        <Image src="/3logo.png" alt="Logo" width={70} height={70} />
+        {/* <p
           className={cn("text-lg text-neutral-700 pt-0.5", headingFont.className)}
         >
           Tasty
-        </p>
+        </p> */}
       </div>
     </Link>
   );
