@@ -15,11 +15,13 @@ interface FormInputProps {
   type?: string;
   placeholder?: string;
   required?: boolean;
+  checked?: boolean;
   disabled?: boolean;
   errors?: Record<string, string[] | undefined>;
   className?: string;
   defaultValue?: string;
   onBlur?: () => void;
+  onChange?: () => void;
 }
 
 export const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
